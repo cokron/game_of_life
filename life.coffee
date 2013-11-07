@@ -1,6 +1,6 @@
 (exports ? this).Life ||=class
   constructor: (@matrix)->
-        
+
   iterate: ->
     output = new Array(@matrix.length)
 
@@ -10,7 +10,7 @@
         output[i][j] = @lives(i,j)
 
     console.log "before: " + @print(@matrix) + "\nafter: " + @print(output)
-    @matrix = output    
+    @matrix = output
 
 
   lives: (i,j) ->
@@ -42,5 +42,5 @@
     for row, i in matrix
       for col, j in row
         res = res + col + " "
-      res = res + "\n"  
-    res            
+      res = res + "\n"
+    res
