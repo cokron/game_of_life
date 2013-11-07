@@ -75,4 +75,16 @@ describe "Life", ->
       life.iterate()
       life.matrix[1][1].should.eql 1
 
-                              
+    it "should allow matrices > 3x3", ->
+      matrix = [
+        [0,0,0,0],
+        [0,0,0,0],
+        [1,1,1,0],
+        [1,1,1,0],
+      ]
+      life = new Life(matrix)
+      life.iterate()
+
+      life.matrix.length.should.eql matrix.length
+      life.matrix[0].length.should.eql matrix[0].length
+  

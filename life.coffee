@@ -2,13 +2,10 @@
   constructor: (@matrix)->
         
   iterate: ->
-    output = [
-        [0,0,0],
-        [0,0,0],
-        [0,0,0],
-      ]
+    output = new Array(@matrix.length)
 
     for row, i in @matrix
+      output[i] = new Array(row.length)
       for col, j in row
         output[i][j] = @lives(i,j)
 
@@ -29,7 +26,8 @@
     @m(i+1,j)   +
     @m(i+1,j+1)
 
-    if (@matrix[i][j] == 1 && sum == 2 || sum == 3) || (@matrix[i][j] == 0 && sum == 3) then 1 else 0
+    if (@matrix[i][j] == 1 && sum == 2 || sum == 3) ||
+        (@matrix[i][j] == 0 && sum == 3) then 1 else 0
 
   m: (i,j) ->
     #console.log @matrix.length
