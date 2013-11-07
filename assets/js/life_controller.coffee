@@ -2,6 +2,12 @@
 app = angular.module('app')
 
 app.controller 'LifeController', ($scope, socket) ->
+  $scope.matrix = [
+     [0,0,0],   
+     [0,0,0],   
+     [0,0,0]
+  ]
+
   # Socket listeners
   # ================
   socket.on 'connect', ->
