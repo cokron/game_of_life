@@ -1,8 +1,14 @@
+input(type="checkbox", ng-model="paused", id="checkbox", ng-change="pause_changed()") 
+label(for="checkbox") Paused
+
+div(ng-show="paused")
+  input(type="number" min="3" max="50" value="5" ng-model="dim")
+  label Dimension
+
+
 table.life
   tr(ng-repeat="row in matrix")
     td(ng-repeat="col in row", ng-class="{alive: col==1}", ng-click="toggle(row, $index)")
 
-input(type="checkbox", ng-model="paused", id="checkbox", ng-change="pause_changed()") 
-label(for="checkbox") Paused
 
 

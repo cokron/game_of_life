@@ -18,6 +18,39 @@ app.controller 'LifeController', ($scope, socket) ->
       socket.emit "setMatrix",
         matrix: $scope.matrix
 
+  redim = ->
+    m = $scope.matrix
+    l = m.length
+    dim = $scope.dim
+
+    if dim > l
+      inflate = dim - l
+      for i in [0..l-1]
+        for j in [0..inflate-1]
+          m[i].push(0)
+        
+      for i in [0..inflate-1]
+        just0 = ->
+          0        
+        m[l+i] = _.map [0..dim-1], just0
+        
+    else
+      console.log "shrinking to " + dim
+      m = _.head(m, dim)
+      for i in [0..dim-1]
+        console.log "shortening row " + i
+        r = _.head(m[i], dim)
+        console.log r
+        m[i] = r
+    $scope.matrix = m  
+        
+  $scope.$watch 'dim', ->
+    redim()
+  , true
+
+  
+   
+
   # Socket listeners
   # ================
   socket.on 'connect', ->
