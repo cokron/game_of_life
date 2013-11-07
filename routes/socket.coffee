@@ -11,30 +11,35 @@ class Runner
         [0,0,0,0,0],
         ]
   life = new Life(matrix)
-
-  constructor: (socket) ->
-    setInterval ->
+  
+  constructor: () ->
+    @sockets = []
+    setInterval =>
       life.iterate()
-      socket.emit "matrix",
-        matrix: life.matrix
-    , 1000
+      for socket in @sockets
+        socket.emit "matrix",
+          matrix: life.matrix
+    , 500
 
   setMatrix: (matrix) ->
-    life.matrix = matrix    
+    life.matrix = matrix
+
+  register: (socket)->
+    @sockets.push(socket)      
   
+runner = new Runner()
 
 module.exports = (socket) =>
+
   matrix = [
       [1,2,3],
       [1,2,3],
       [1,2,3]
   ]
 
-  runner = `undefined`
   socket.on "start", =>
     console.log "client connected, yeah"
-    runner = new Runner(socket)
-
+    runner.register(socket)
         
   socket.on "setMatrix", (data)=>
     runner.setMatrix(data.matrix)
