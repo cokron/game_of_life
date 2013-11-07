@@ -35,5 +35,5 @@ describe "Life", ->
 
       life = new Life(matrix)
       life.iterate()
-      iterated_matrix.should.equal life.matrix
+      iterated_matrix.should.deep.equal life.matrix
 
