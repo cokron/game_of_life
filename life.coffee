@@ -10,15 +10,13 @@
 
     for row, i in @matrix
       for col, j in row
-        output[i][j] = @survives(i,j)
-        #output[i][j] = 1 if @comes_to_life(i,j)
+        output[i][j] = @lives(i,j)
 
     console.log "before: " + @print(@matrix) + "\nafter: " + @print(output)
     @matrix = output    
 
 
-  survives: (i,j) ->
-    return 0 if @matrix[i][j] == 0    
+  lives: (i,j) ->
     sum = 
     @m(i-1,j-1) +
     @m(i-1,j)   +
@@ -31,7 +29,7 @@
     @m(i+1,j)   +
     @m(i+1,j+1)
 
-    if sum == 2 || sum == 3 then 1 else 0
+    if (@matrix[i][j] == 1 && sum == 2 || sum == 3) || (@matrix[i][j] == 0 && sum == 3) then 1 else 0
 
   m: (i,j) ->
     #console.log @matrix.length

@@ -63,7 +63,6 @@ describe "Life", ->
       life.iterate()
       life.matrix[1][1].should.eql 1
 
-      expected_matrix.should.eql life.matrix
 
     it "Eine tote Zelle mit genau drei lebenden Nachbarn wird in der Folgegeneration neu geboren.", ->
       matrix = [
