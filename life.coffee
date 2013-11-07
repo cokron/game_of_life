@@ -9,7 +9,7 @@
       for col, j in row
         output[i][j] = @lives(i,j)
 
-    console.log "before: " + @print(@matrix) + "\nafter: " + @print(output)
+    #console.log "before: " + @print(@matrix) + "\nafter: " + @print(output)
     @matrix = output
 
 

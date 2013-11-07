@@ -1,0 +1,13 @@
+table{
+  background: #c0c0c0;
+}
+
+table.life td{
+  width:20px;
+  height:20px;
+  background: white;
+}
+
+table.life td.alive{
+  background: black;
+}

@@ -1,6 +1,9 @@
 extends layout
 
 block body
+  #no-connection(style="border: 2px solid red;")
+    "WE HAVE NO SERVER CONNECTION!"
+
   div(ng-view)
 
   script(src='js/angular/angular.min.js')
@@ -11,7 +14,7 @@ block body
 
   != js('routes')
 
-  != js('chat_service')
+  != js('socket_service')
 
   != js('life_controller')
 

@@ -1,4 +1,4 @@
-table
+table.life
   tr(ng-repeat="row in matrix")
-    td(ng-repeat="col in row")
-      {{col}}
+    td(ng-repeat="col in row", ng-class="{alive: col==1}")
+
