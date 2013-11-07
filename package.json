@@ -12,7 +12,14 @@
   },
 
   "dependencies": {
-    "coffee-script":    ">= 1.2.0"
+     "coffee-script": "1.5.0",
+     "connect-assets": "2.4.0",
+     "express": "3.x",
+     "express-resource": "1.0.0",
+     "jade": ">= 0.28.2",
+     "socket.io": "0.9.13",
+     "socket.io-client": "0.9.11",
+     "underscore": ">=1.4.4"
   },
 
   "devDependencies": {
