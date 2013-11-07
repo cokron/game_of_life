@@ -1,10 +1,12 @@
-input(type="checkbox", ng-model="paused", id="checkbox", ng-change="pause_changed()") 
+input(type="checkbox", ng-model="paused", id="checkbox") 
 label(for="checkbox") Paused
 
-div(ng-show="paused")
+span(ng-show="paused")
   input(type="number" min="3" max="50" value="5" ng-model="dim")
   label Dimension
 
+span(ng-show="paused")
+  button(ng-click="emptyMatrix()") Empty Matrix
 
 table.life
   tr(ng-repeat="row in matrix")
