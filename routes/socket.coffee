@@ -17,7 +17,10 @@ class Runner
       life.iterate()
       socket.emit "matrix",
         matrix: life.matrix
-    , 500  
+    , 1000
+
+  setMatrix: (matrix) ->
+    life.matrix = matrix    
   
 
 module.exports = (socket) =>
@@ -27,9 +30,11 @@ module.exports = (socket) =>
       [1,2,3]
   ]
 
+  runner = `undefined`
   socket.on "start", =>
     console.log "client connected, yeah"
     runner = new Runner(socket)
 
         
-
+  socket.on "setMatrix", (data)=>
+    runner.setMatrix(data.matrix)

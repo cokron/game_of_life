@@ -8,10 +8,15 @@ app.controller 'LifeController', ($scope, socket) ->
      [0,0,0]
   ]
 
+  $scope.toggle = (row, index) ->
+    console.log "toggle"
+    row[index] = (row[index] + 1) % 2      
 
-  $scope.test = ->
-    console.log "cliked"
-    socket.emit "test"        
+  $scope.pause_changed = ->
+    unless $scope.paused
+      console.log "overwriting matrix!"
+      socket.emit "setMatrix",
+        matrix: $scope.matrix
 
   # Socket listeners
   # ================
@@ -26,5 +31,5 @@ app.controller 'LifeController', ($scope, socket) ->
 
   socket.on 'matrix', (data) ->
     console.log "we received new data"
-    $scope.matrix = data.matrix
+    $scope.matrix = data.matrix unless $scope.paused
         
