@@ -2,6 +2,7 @@
 app = angular.module('app')
 
 app.controller 'LifeController', ($scope, socket) ->
+  $scope.init = false
   $scope.matrix = [[0]]
   $scope.dim = 5
 
@@ -45,8 +46,8 @@ app.controller 'LifeController', ($scope, socket) ->
         $scope.matrix[i][j] = 0 
 
   $scope.$watch 'paused', ->
-    console.log "pause"
-    unless $scope.paused
+    console.log "paused: #{$scope.paused} (init: #{$scope.init})"
+    if !$scope.paused && $scope.init
       console.log "overwriting matrix!"
       socket.emit "setMatrix",
         matrix: $scope.matrix
@@ -76,3 +77,4 @@ app.controller 'LifeController', ($scope, socket) ->
       console.log "we received new data"
       $scope.matrix = data.matrix
       $scope.dim = data.matrix.length
+      $scope.init = true

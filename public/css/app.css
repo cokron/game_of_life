@@ -1,11 +1,14 @@
-table{
+table.life{
   background: #c0c0c0;
+  border-collapse: separate;
+  border-spacing:2px;
 }
 
 table.life td{
   width:10px;
   height:10px;
   background: white;
+  margin: 2px;
 }
 
 table.life td.alive{
