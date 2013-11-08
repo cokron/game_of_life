@@ -6,7 +6,6 @@ app.controller 'LifeController', ($scope, socket) ->
   $scope.init = false
   $scope.matrix = [[0,0],[0,2]]
   $scope.dim = 5
-  $scope.preset = ""
   $scope.speed = 500
 
   matrix_util = new MatrixUtil
@@ -33,10 +32,10 @@ app.controller 'LifeController', ($scope, socket) ->
         speed: $scope.speed
   , true
 
-  $scope.$watch 'preset', ->
+  $scope.preset = (preset) ->
     if $scope.paused
-      console.log "preset: #{$scope.preset}"
-      $scope.matrix = matrix_util.insert_preset $scope.matrix, $scope.preset
+      console.log "preset: #{preset}"
+      $scope.matrix = matrix_util.insert_preset $scope.matrix, preset
 
   $scope.$watch 'speed', ->
     console.log "speed: #{$scope.speed}"

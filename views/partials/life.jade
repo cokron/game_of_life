@@ -11,11 +11,10 @@ form.col-md-2(role="form")
     button.btn.btn-danger(ng-click="emptyMatrix()") Empty Matrix
 
   div.form-group(ng-show="paused")
-    label Presets
-    select.form-control(ng-model="preset")
-      option
-      option doppel-u
-      option glider
+    div.btn-group-vertical
+      button.btn.btn-default(ng-click='preset("doppel-u")') doppel-u
+      button.btn.btn-default(ng-click='preset("glider")') glider
+      button.btn.btn-default(ng-click='preset("")') donno...
 
   div.form-group(ng-show="paused")
     label Speed
