@@ -14,12 +14,21 @@ class Runner
 
   constructor: () ->
     @sockets = []
-    setInterval =>
+    @speed = 500
+
+  start: ->
+    @interval_handle = setInterval =>
       life.iterate()
       for socket in @sockets
         socket.emit "matrix",
           matrix: life.matrix
-    , 500
+    , @speed
+
+  setSpeed: (speed) ->
+    console.log "set new speed: #{speed}"
+    clearInterval(@interval_handle)
+    @speed = speed
+    @start()
 
   setMatrix: (matrix) ->
     life.matrix = matrix
@@ -28,6 +37,7 @@ class Runner
     @sockets.push(socket)
 
 runner = new Runner()
+runner.start()
 
 module.exports = (socket) =>
 
@@ -41,5 +51,7 @@ module.exports = (socket) =>
     console.log "client connected, yeah"
     runner.register(socket)
 
-  socket.on "setMatrix", (data)=>
+  socket.on "setNewParams", (data) =>
+    console.log "set new params called"
     runner.setMatrix(data.matrix)
+    runner.setSpeed(data.speed)

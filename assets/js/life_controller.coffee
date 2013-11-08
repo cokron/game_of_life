@@ -5,33 +5,11 @@ app.controller 'LifeController', ($scope, socket) ->
   $scope.init = false
   $scope.matrix = [[0]]
   $scope.dim = 5
+  $scope.preset = ""
+  $scope.speed = 500
 
-  redim = ->
-    m = $scope.matrix
-    l = m.length
-    dim = $scope.dim
-    console.log "redim from #{l} to #{dim}"
-
-    if dim > l
-      inflate = dim - l
-      for i in [0..l-1]
-        for j in [0..inflate-1]
-          m[i].push(0)
-      for i in [0..inflate-1]
-        just0 = ->
-          0
-        m[l+i] = _.map [0..dim-1], just0
-    else
-      console.log "shrinking to " + dim
-      m = _.head(m, dim)
-      for i in [0..dim-1]
-        console.log "shortening row " + i
-        r = _.head(m[i], dim)
-        console.log r
-        m[i] = r
-    $scope.matrix = m
-
-  redim()
+  matrix_util = new MatrixUtil
+  $scope.matrix = matrix_util.redim($scope.matrix, $scope.dim)
 
   $scope.toggle = (row, index) ->
     if $scope.paused
@@ -48,17 +26,23 @@ app.controller 'LifeController', ($scope, socket) ->
   $scope.$watch 'paused', ->
     console.log "paused: #{$scope.paused} (init: #{$scope.init})"
     if !$scope.paused && $scope.init
-      console.log "overwriting matrix!"
-      socket.emit "setMatrix",
+      console.log "set new params!!"
+      socket.emit "setNewParams",
         matrix: $scope.matrix
+        speed: $scope.speed
   , true
 
+  $scope.$watch 'preset', ->
+    console.log "preset: #{$scope.preset}"
+    unless $scope.paused
+      $scope.matrix = matrix_util.insert_preset $scope.preset
+
+  $scope.$watch 'speed', ->
+    console.log "speed: #{$scope.speed}"
 
   $scope.$watch 'dim', ->
-    redim()
+    $scope.matrix = matrix_util.redim($scope.matrix, $scope.dim)
   , true
-
-
 
 
   # Socket listeners
@@ -78,3 +62,60 @@ app.controller 'LifeController', ($scope, socket) ->
       $scope.matrix = data.matrix
       $scope.dim = data.matrix.length
       $scope.init = true
+
+
+# matrix utility
+class MatrixUtil
+  redim: (m, newdim) ->
+    l = m.length
+    dim = newdim
+    console.log "redim from #{l} to #{dim}"
+
+    if dim > l
+      inflate = dim - l
+      for i in [0..l-1]
+        for j in [0..inflate-1]
+          m[i].push(0)
+      for i in [0..inflate-1]
+        just0 = ->
+          0
+        m[l+i] = _.map [0..dim-1], just0
+    else
+      console.log "shrinking to " + dim
+      m = _.head(m, dim)
+      for i in [0..dim-1]
+        console.log "shortening row " + i
+        r = _.head(m[i], dim)
+        console.log r
+        m[i] = r
+    m
+
+  insert_preset: (m, preset) ->
+    switch preset
+      when "doppel u"
+        if m.length < 7
+          x_start = m.length / 2 - 1
+          y_start = m.length / 2 - 3
+        else
+          x_start = 0
+          y_start = 0
+        s = [
+          [1,1,1],
+          [1,0,1],
+          [1,0,1],
+          [0,0,0],
+          [1,0,1],
+          [1,0,1],
+          [1,1,1],
+        ]
+        @stamp m, s, x_start, y_start
+    m
+
+  stamp: (m, stamp, x_start, y_start) ->
+    for i in [0..stamp[0].length-1]
+      for j in [0..stamp.length-1]
+        set_cell m, i+x_start, j+y_start, stamp[ii][jj]
+
+  set_cell: (m, x, y, v) ->
+    if x < m.length && y < m.length
+      m[x][y] = v

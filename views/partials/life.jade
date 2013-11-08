@@ -1,16 +1,30 @@
-input(type="checkbox", ng-model="paused", id="checkbox") 
-label(for="checkbox") Paused
+form.col-md-2(role="form")
+  div.checkbox
+    label(for="checkbox") Paused
+      input(type="checkbox", ng-model="paused", id="checkbox") 
 
-span(ng-show="paused")
-  input(type="number" min="3" max="50" value="5" ng-model="dim")
-  label Dimension
+  div.form-group(ng-show="paused")
+    label Dimension
+    input.form-control(type="number" min="3" max="50" value="5" ng-model="dim")
 
-span(ng-show="paused")
-  button(ng-click="emptyMatrix()") Empty Matrix
+  div.form-group(ng-show="paused")
+    button.btn.btn-danger(ng-click="emptyMatrix()") Empty Matrix
 
-table.life
-  tr(ng-repeat="row in matrix")
-    td(ng-repeat="col in row", ng-class="{alive: col==1}", ng-click="toggle(row, $index)")
+  div.form-group(ng-show="paused")
+    label Presets
+    select.form-control(ng-model="preset")
+      option
+      option doppel-u
+      option glider
+
+  div.form-group(ng-show="paused")
+    label Speed
+    input.form-control(type="number" min="100" max="5000" step="100" value="500" ng-model="speed")
+
+div.col-md-10
+  table.life
+    tr(ng-repeat="row in matrix")
+      td(ng-repeat="col in row", ng-class="{alive: col==1}", ng-click="toggle(row, $index)")
 
 
 
