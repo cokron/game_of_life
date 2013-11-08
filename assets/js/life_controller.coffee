@@ -2,8 +2,9 @@
 app = angular.module('app')
 
 app.controller 'LifeController', ($scope, socket) ->
+  $scope.paused = false
   $scope.init = false
-  $scope.matrix = [[0]]
+  $scope.matrix = [[0,0],[0,2]]
   $scope.dim = 5
   $scope.preset = ""
   $scope.speed = 500
@@ -33,17 +34,17 @@ app.controller 'LifeController', ($scope, socket) ->
   , true
 
   $scope.$watch 'preset', ->
-    console.log "preset: #{$scope.preset}"
-    unless $scope.paused
-      $scope.matrix = matrix_util.insert_preset $scope.preset
+    if $scope.paused
+      console.log "preset: #{$scope.preset}"
+      $scope.matrix = matrix_util.insert_preset $scope.matrix, $scope.preset
 
   $scope.$watch 'speed', ->
     console.log "speed: #{$scope.speed}"
 
   $scope.$watch 'dim', ->
-    $scope.matrix = matrix_util.redim($scope.matrix, $scope.dim)
+    if $scope.init
+      $scope.matrix = matrix_util.redim($scope.matrix, $scope.dim)
   , true
-
 
   # Socket listeners
   # ================
@@ -92,10 +93,10 @@ class MatrixUtil
 
   insert_preset: (m, preset) ->
     switch preset
-      when "doppel u"
-        if m.length < 7
-          x_start = m.length / 2 - 1
-          y_start = m.length / 2 - 3
+      when "doppel-u"
+        if m.length > 7
+          x_start = Math.max(0, Math.floor(m.length / 2 - 1))
+          y_start = Math.max(0, Math.floor(m.length / 2 - 3))
         else
           x_start = 0
           y_start = 0
@@ -112,10 +113,10 @@ class MatrixUtil
     m
 
   stamp: (m, stamp, x_start, y_start) ->
-    for i in [0..stamp[0].length-1]
-      for j in [0..stamp.length-1]
-        set_cell m, i+x_start, j+y_start, stamp[ii][jj]
+    for i in [0...stamp[0].length]
+      for j in [0...stamp.length]
+        @set_cell m, i + x_start, j + y_start, stamp[j][i]
 
   set_cell: (m, x, y, v) ->
     if x < m.length && y < m.length
-      m[x][y] = v
+      m[y][x] = v
