@@ -109,6 +109,13 @@ class MatrixUtil
           [1,1,1],
         ]
         @stamp m, s, x_start, y_start
+      when "glider"
+        s = [
+          [0,1,0],
+          [0,0,1],
+          [1,1,1],
+        ]
+        @stamp m, s, 0, 0
     m
 
   stamp: (m, stamp, x_start, y_start) ->
